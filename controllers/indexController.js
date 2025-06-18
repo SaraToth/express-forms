@@ -5,15 +5,48 @@ const { body, validationResult } = require("express-validator");
 const alphaErr = "must only contain letters.";
 const lengthErr = "must be between 1 and 10 characters";
 
+const validateUser = [
+    body("firstName").trim()
+        .isAlpha().withMessage(`First name ${alphaErr}`)
+        .isLength({ min: 1, max: 10 }).withMessage(`First name ${lengthErr}`),
+    body("lastName").trim()
+        .isAlpha().withMessage(`Last name ${alphaErr}`)
+        .isLength({ min: 1, max: 10 }).withMessage(`Last name ${lengthErr}`),
+];
+
 const getCreateUser = (req, res) => {
     res.render("createUser");
 };
 
-const postCreateUser = (req, res) => {
-    const { firstName, lastName } = req.body;
-    usersStorage.addUser({ firstName, lastName });
-    res.redirect("/");
-};
+const postCreateUser = [
+    validateUser,
+
+    // Check for any validation errors
+    (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).render("createUser", {
+                errors: errors.array(),
+            });
+        }
+
+        const { firstName, lastName } = req.body;
+        usersStorage.addUser({ firstName, lastName });
+        res.redirect("/");
+    },
+
+    // (req, res) => {
+    //     const { firstName, lastName } = req.body;
+    //     usersStorage.addUser({ firstName, lastName });
+    //     res.redirect("/");
+    // },
+]
+
+// const postCreateUser = (req, res) => {
+//     const { firstName, lastName } = req.body;
+//     usersStorage.addUser({ firstName, lastName });
+//     res.redirect("/");
+// };
 
 const getIndex = (req, res) => {
     res.render("index", {
