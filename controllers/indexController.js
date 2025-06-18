@@ -32,7 +32,6 @@ const postCreateUser = [
     },
 ];
 
-
 const postUpdateUser = [
     validateUser,
 
@@ -55,6 +54,12 @@ const postUpdateUser = [
     }
 ];
 
+const postDeleteUser = (req, res) => {
+    const id = req.params.id;
+    usersStorage.deleteUser(id);
+    res.redirect("/");
+}
+
 const getUpdateUser = (req, res) => {
     const id = req.params.id;
     const user = usersStorage.getUser(id);
@@ -73,4 +78,4 @@ const getIndex = (req, res) => {
     });
 };
 
-module.exports = { getCreateUser, postCreateUser, getIndex, getUpdateUser,postUpdateUser };
+module.exports = { getCreateUser, postCreateUser, getIndex, getUpdateUser,postUpdateUser, postDeleteUser };
