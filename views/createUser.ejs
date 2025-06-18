@@ -8,12 +8,13 @@
 <body>
     <h1>Create User</h1>
 
+    <%- include("partials/errors.ejs") %>
     <form action="/create" method="POST">
         <label for="firstName">First Name:</label>
-        <input placeholder="John" type="text" name="firstName" id="firstName">
+        <input placeholder="John" type="text" name="firstName" id="firstName" required>
 
         <label for="lastName">Last Name:</label>
-        <input placeholder="Doe" type="text" name="lastName" id="lastName">
+        <input placeholder="Doe" type="text" name="lastName" id="lastName" required>
         
         <button type="submit">Submit</button>
     </form>
