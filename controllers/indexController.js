@@ -14,10 +14,6 @@ const validateUser = [
         .isLength({ min: 1, max: 10 }).withMessage(`Last name ${lengthErr}`),
 ];
 
-const getCreateUser = (req, res) => {
-    res.render("createUser");
-};
-
 const postCreateUser = [
     validateUser,
 
@@ -34,19 +30,26 @@ const postCreateUser = [
         usersStorage.addUser({ firstName, lastName });
         res.redirect("/");
     },
+];
+    // updateUser(id, { firstName, lastName }) {
+    //     this.storage[id] = { id, firstName, lastName };
+    // }
 
-    // (req, res) => {
-    //     const { firstName, lastName } = req.body;
-    //     usersStorage.addUser({ firstName, lastName });
-    //     res.redirect("/");
-    // },
-]
+const postUpdateUser = (req, res) => {
 
-// const postCreateUser = (req, res) => {
-//     const { firstName, lastName } = req.body;
-//     usersStorage.addUser({ firstName, lastName });
-//     res.redirect("/");
-// };
+};
+
+const getUpdateUser = (req, res) => {
+    const id = req.params.id;
+    const user = usersStorage.getUser(id);
+    res.render("updateUser", { user: user });
+};
+
+
+const getCreateUser = (req, res) => {
+    const thing = req.params;
+    res.render("createUser");
+};
 
 const getIndex = (req, res) => {
     res.render("index", {
@@ -54,4 +57,4 @@ const getIndex = (req, res) => {
     });
 };
 
-module.exports = { getCreateUser, postCreateUser, getIndex };
+module.exports = { getCreateUser, postCreateUser, getIndex, getUpdateUser,postUpdateUser };
