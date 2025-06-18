@@ -31,13 +31,29 @@ const postCreateUser = [
         res.redirect("/");
     },
 ];
-    // updateUser(id, { firstName, lastName }) {
-    //     this.storage[id] = { id, firstName, lastName };
-    // }
 
-const postUpdateUser = (req, res) => {
 
-};
+const postUpdateUser = [
+    validateUser,
+
+    (req, res) => {
+        const user = usersStorage.getUser(req.params.id);
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).render("updateUser", {
+                user: user,
+                errors: errors.array(),
+            });
+        }
+
+        const { firstName, lastName } = req.body;
+        const id = req.params.id;
+
+        usersStorage.updateUser(id, { firstName, lastName });
+        res.redirect("/");
+    }
+];
 
 const getUpdateUser = (req, res) => {
     const id = req.params.id;
