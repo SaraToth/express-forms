@@ -1,21 +1,12 @@
 const { Router } = require("express");
 const indexRouter = Router();
 const usersStorage = require("../storages/usersStorage");
+const { getCreateUser, postCreateUser, getIndex } = require("../controllers/indexController");
 
-indexRouter.get("/create", (req, res) => {
-    res.render("createUser");
-});
+indexRouter.get("/create", getCreateUser);
 
-indexRouter.post("/create", (req, res) => {
-    const { firstName, lastName } = req.body;
-    usersStorage.addUser({ firstName, lastName });
-    res.redirect("/");
-});
+indexRouter.post("/create", postCreateUser);
 
-indexRouter.get("/", (req, res) => {
-    res.render("index", {
-        users: usersStorage.getUsers(),
-    });
-});
+indexRouter.get("/", getIndex);
 
 module.exports = indexRouter;
